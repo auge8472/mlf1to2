@@ -8,84 +8,66 @@
 
 $settings['max_queries'] = 500;
 
-class Backup 
- {
-  var $start_time;
-  var $check_time;
-  var $file;
-  var $dump = '';
-  var $queries = 0;
-  var $max_queries = 300;
-  var $errors = Array();
+class Backup {
+	var $start_time;
+	var $check_time;
+	var $file;
+	var $dump = '';
+	var $queries = 0;
+	var $max_queries = 300;
+	var $errors = Array();
 
-  function Backup()
-   {
-    @set_time_limit(30);
-    $this->start_time = time();
-    $this->check_time = $this->start_time;
-   }
+	function Backup() {
+		@set_time_limit(30);
+		$this->start_time = time();
+		$this->check_time = $this->start_time;
+	}
 
-  function set_max_queries($max_queries)
-   {
-    $this->max_queries = $max_queries;
-   }
+	function set_max_queries($max_queries) {
+		$this->max_queries = $max_queries;
+	}
 
-  function set_file($file)
-   {
-    $this->file = $file;
-   }
+	function set_file($file) {
+		$this->file = $file;
+	}
 
-  function assign($data)
-   {
-    $this->dump .= utf8_encode($data);
-    $this->queries++;
-     
-    $now = time();
-    if(($now-25) >= $this->check_time)
-     {
-      $this->check_time = $now;
-      @set_time_limit(30);
-     }
-    
-    if($this->queries >= $this->max_queries)
-     {
-      // buffer:
-      $this->save();
-      $this->queries = 0;
-     } 
-   }
+	function assign($data) {
+		$this->dump .= utf8_encode($data);
+		$this->queries++;
+		$now = time();
+		if (($now-25) >= $this->check_time) {
+			$this->check_time = $now;
+			@set_time_limit(30);
+		}
+		if ($this->queries >= $this->max_queries) {
+			// buffer:
+			$this->save();
+			$this->queries = 0;
+		}
+	}
 
-  function save()
-   {
-    if($this->dump != '')
-     {
-      if(empty($this->file))
-       {
-        $this->file = 'mlf_1.7_backup_'.date("YmdHis").'.sql';
-       }
-      if($handle = fopen($this->file, 'a+'))
-       {
-        #flock($fp, 2);
-        fwrite($handle, $this->dump);
-        #flock($fp, 3);
-        fclose($handle);
-        $this->dump = '';
-       } 
-      else
-       {
-        $this->errors[] = 'Could not write backup file!';
-       }     
-     }
-    if(empty($errors))
-     {
-      return true;
-     }
-    else
-     {
-      return false;
-     }
-   }
- } 
+	function save() {
+		if ($this->dump != '') {
+			if (empty($this->file)) {
+				$this->file = 'mlf_1.7_backup_'.date("YmdHis").'.sql';
+			}
+			if ($handle = fopen($this->file, 'a+')) {
+				#flock($fp, 2);
+				fwrite($handle, $this->dump);
+				#flock($fp, 3);
+				fclose($handle);
+				$this->dump = '';
+			} else {
+				$this->errors[] = 'Could not write backup file!';
+			}
+		}
+		if (empty($errors)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
 
 if(isset($_POST['backup_submit']))
  {
