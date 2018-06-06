@@ -307,14 +307,17 @@ case 'done': ?>
 <?php endif; ?>
    </section>
 
-<?php
+<?php if (isset($errors)): ?>
+   <section>
+    <h2>Error!</h2>
+    <ul>
+<?php foreach ($errors as $error): ?>
+     <li><?php echo $error; ?></li>
+<?php endforeach; ?>
+    </ul>
+   </section>
+<?php endif; ?>
 
-if(isset($errors))
-    {
-     ?><p class="caution">Error!</p><ul><?php foreach($errors as $error) { ?><li><?php echo $error; ?></li><?php } ?></ul><?php
-    }
-
-?>
    <form action="<?php echo basename($_SERVER['PHP_SELF']); ?>" method="post">
     <table class="admintab" border="0" cellpadding="5" cellspacing="1">
      <tr>
