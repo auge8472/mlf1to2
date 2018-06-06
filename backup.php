@@ -262,20 +262,22 @@ header('Content-Type: text/html; charset=utf-8');
   <title>my little forum 1.7 backup</title>
   <style type="text/css">
 <!--
-body              { color:#000; background:#fff; margin:0; padding:0; font-family: verdana, arial, sans-serif; font-size:100.1%; }
-h1                { font-size:1.25em; }
-h2                { font-size:16px; margin:0; padding:3px 0 3px 0; }
-p,ul              { font-size:0.82em; line-height:1.45em; max-width:700px; }
-header            { margin:0; padding:0 20px 0 20px; color:#000000; background:#d2ddea; border-bottom: 1px solid #bacbdf; }
-header h1         { font-size:1.75em; line-height:2.2em; margin:0; padding:0; color:#000080; }
-main              { padding:20px; }
-a:link            { color: #0000cc; text-decoration: none; }
-a:visited         { color: #0000cc; text-decoration: none; }
-a:hover           { color: #0000ff; text-decoration: underline; }
-a:active          { color: #ff0000; text-decoration: none; }
+html, body       { color: #000; background: #fff; margin: 0; padding: 0; font-family: sans-serif; }
+header           { margin: 0; padding: 0.25rem 1rem; color:#000; background:#d2ddea; border-bottom: 1px solid #bacbdf; }
+header h1        { font-size: 1.5em; margin: 0; padding: 0; color: #008; }
+main             { padding: 1rem; }
+main section:not(:last-child) { margin: 0 0 1rem 0; }
+main h2          { font-size: 1.25em; margin: 0; padding: 3px 0; }
+p, ul, form      { font-size: 1em; margin: 0.5rem 0 0 0; line-height:1.45em; }
+fieldset:not(:first-child) { margin: 0.5rem 0 0 0; }
+label            { font-weight: bold; cursor: pointer; }
+
 #caution         { background: #ffc; border: 3px solid #a00; padding: 0.5rem; }
 #caution h2      { color: a00; }
 #caution ul      { padding: 0 0 0 1rem; }
+a:link, a:visited{ color: #00c; text-decoration: none; }
+a:focus, a:hover { color: #00f; text-decoration: underline; }
+a:active         { color: #f00; text-decoration: none; }
 -->
   </style>
  </head>
