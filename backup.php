@@ -269,12 +269,7 @@ p,ul              { font-size:0.82em; line-height:1.45em; max-width:700px; }
 header            { margin:0; padding:0 20px 0 20px; color:#000000; background:#d2ddea; border-bottom: 1px solid #bacbdf; }
 header h1         { font-size:1.75em; line-height:2.2em; margin:0; padding:0; color:#000080; }
 main              { padding:20px; }
-table.admintab    { border: 1px solid #bacbdf; }
-td.admintab-t     { vertical-align: top; font-family: verdana, arial, sans-serif; background: #d2ddea; font-size:1em; font-weight:bold; }
-td.admintab-l     { width: 50%; vertical-align: top; font-family: verdana, arial, sans-serif; font-size: 13px; background: #e2eaf3; }
-td.admintab-r     { width: 50%; vertical-align: top; font-family: verdana, arial, sans-serif; font-size: 13px; background: #f5f5f5; }
 .caution          { color: red; font-weight: bold; }
-.small            { font-size: 11px; }
 a:link            { color: #0000cc; text-decoration: none; }
 a:visited         { color: #0000cc; text-decoration: none; }
 a:hover           { color: #0000ff; text-decoration: underline; }
