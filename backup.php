@@ -255,12 +255,12 @@ if(empty($action)) $action = 'main';
 
 header('Content-Type: text/html; charset=utf-8');
 
-?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<head>
-<title>my little forum 1.7 backup</title>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<style type="text/css">
+?><!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8">
+  <title>my little forum 1.7 backup</title>
+  <style type="text/css">
 <!--
 body              { color:#000; background:#fff; margin:0; padding:0; font-family: verdana, arial, sans-serif; font-size:100.1%; }
 h1                { font-size:1.25em; }
@@ -279,36 +279,33 @@ a:link            { color: #0000cc; text-decoration: none; }
 a:visited         { color: #0000cc; text-decoration: none; }
 a:hover           { color: #0000ff; text-decoration: underline; }
 a:active          { color: #ff0000; text-decoration: none; }
-
 -->
-</style>
-</head>
+  </style>
+ </head>
+ <body>
+  <div id="top">
+   <h1>my little forum 1.7 backup</h1>
+  </div>
 
-<body>
-
-<div id="top">
-<h1>my little forum 1.7 backup</h1>
-</div>
-
-<div id="content">
+  <div id="content">
 
 <?php switch($action):
 case 'done': ?>
-<p><strong>Backup file created!</strong></p>
-<p><a href="<?php echo $backup->file; ?>"><?php echo $backup->file; ?></a> <span class="small">(<?php echo $filesize; ?></a> MB)</span></p>
-<p class="small">Elapse time: <?php if($elapse_time<1) echo 'less than 1 second'; else echo $elapse_time . ' seconds'; ?></p>
+   <p><strong>Backup file created!</strong></p>
+   <p><a href="<?php echo $backup->file; ?>"><?php echo $backup->file; ?></a> <span class="small">(<?php echo $filesize; ?></a> MB)</span></p>
+   <p class="small">Elapse time: <?php if($elapse_time<1) echo 'less than 1 second'; else echo $elapse_time . ' seconds'; ?></p>
 <?php break; ?>
- 
+
 <?php default: ?>
 
-<p>By submitting this form the specified backup file will be created in 
+   <p>By submitting this form the specified backup file will be created in 
 <?php echo dirname($_SERVER['PHP_SELF']); ?> so make sure that this direcory is 
 writable.<br />
 You can import the backup file into version 2.1 with a tool like phpMyAdmin or the 
 backup function of version 2.1 (therefor copy the file into the directory "backup").</p>
 
 <?php if(ini_get('safe_mode')): ?>
-<p><strong>Warning:</strong> As "safe mode" is activated on this server the script running time cannot be extended! This may cause an error and an uncomplete backup file if there's a large amount of entries.</p>
+   <p><strong>Warning:</strong> As "safe mode" is activated on this server the script running time cannot be extended! This may cause an error and an uncomplete backup file if there's a large amount of entries.</p>
 <?php endif; ?>
 
 <?php
@@ -317,73 +314,57 @@ if(isset($errors))
     {
      ?><p class="caution">Error!</p><ul><?php foreach($errors as $error) { ?><li><?php echo $error; ?></li><?php } ?></ul><?php
     }
-   
-?><form action="<?php echo basename($_SERVER['PHP_SELF']); ?>" method="post">
-<table class="admintab" border="0" cellpadding="5" cellspacing="1">
 
-<tr>
-<td class="admintab-t" colspan="2">Settings of the old forum (1.7*)</td>
-</tr>
-
-<tr>
-<td class="admintab-l"><label for="db_host"><strong>Database host</strong></label><br />
-<span class="small">host name, probably "localhost"</span></td>
-<td class="admintab-r"><input id="db_host" type="text" name="db_host" value="<?php if (isset($_POST['db_host'])) echo htmlspecialchars(stripslashes($_POST['db_host'])); else echo 'localhost'; ?>" size="40" /></td>
-</tr>
-
-<tr>
-<td class="admintab-l"><label for="db_name"><strong>Database name</strong></label><br />
-<span class="small">Name of the database</span></td>
-<td class="admintab-r"><input id="db_name" type="text" name="db_name" value="<?php if (isset($_POST['db_name'])) echo htmlspecialchars(stripslashes($_POST['db_name'])); else echo ''; ?>" size="40" /></td>
-</tr>
-
-<tr>
-<td class="admintab-l"><label for="db_user"><strong>Database user</strong></label><br />
-<span class="small">Username to access the database</span></td>
-<td class="admintab-r"><input id="db_user" type="text" name="db_user" value="<?php if (isset($_POST['db_user'])) echo htmlspecialchars(stripslashes($_POST['db_user'])); else echo ''; ?>" size="40" /></td>
-</tr>
-
-<tr>
-<td class="admintab-l"><label for="db_password"><strong>Database password</strong></label><br />
-<span class="small">Password to access the database</span></td>
-<td class="admintab-r"><input id="db_password" type="password" name="db_password" size="40" /></td>
-</tr>
-
-<tr>
-<td class="admintab-l"><label for="table_prefix_1"><strong>Database Table prefix</strong></label><br />
-<span class="small">Table prefix, probably "forum_"</span></td>
-<td class="admintab-r"><input id="table_prefix_1" type="text" name="table_prefix_1" value="<?php if (isset($_POST['table_prefix_1'])) echo htmlspecialchars(stripslashes($_POST['table_prefix_1'])); else echo 'forum_'; ?>" size="40" /></td>
-</tr>
-
-<tr>
-<td class="admintab-t" colspan="2">Settings of the new forum (2.1)</td>
-</tr>
-
-<tr>
-<td class="admintab-l"><label for="table_prefix_2"><strong>Database Table prefix</strong></label><br />
-<span class="small">Table prefix, probably "mlf2_"</span></td>
-<td class="admintab-r"><input id="table_prefix_2" type="text" name="table_prefix_2" value="<?php if (isset($_POST['table_prefix_2'])) echo htmlspecialchars(stripslashes($_POST['table_prefix_2'])); else echo 'mlf2_'; ?>" size="40" /></td>
-</tr>
-
-<tr>
-<td class="admintab-t" colspan="2">Backup file</td>
-</tr>
-
-<tr>
-<td class="admintab-l"><label for="file"><strong>Filename</strong></label><br />
-<span class="small">Name of the backup file</span></td>
-<td class="admintab-r"><input id="file" type="text" name="file" value="<?php if (isset($_POST['file'])) echo stripslashes($_POST['file']); else echo 'mlf_1.7_backup_'.date("YmdHis").'.sql'; ?>" size="40" /></td>
-</tr>
-
-<tr>
-<td class="admintab-l">&nbsp;</td>
-<td class="admintab-r"><input type="submit" name="backup_submit" value="OK - Create backup file" /></td>
-</tr>
-</table>
-</form>
+?>
+   <form action="<?php echo basename($_SERVER['PHP_SELF']); ?>" method="post">
+    <table class="admintab" border="0" cellpadding="5" cellspacing="1">
+     <tr>
+      <td class="admintab-t" colspan="2">Settings of the old forum (1.7*)</td>
+     </tr>
+     <tr>
+      <td class="admintab-l"><label for="db_host"><strong>Database host</strong></label><br /><span class="small">host name, probably "localhost"</span></td>
+      <td class="admintab-r"><input id="db_host" type="text" name="db_host" value="<?php if (isset($_POST['db_host'])) echo htmlspecialchars(stripslashes($_POST['db_host'])); else echo 'localhost'; ?>" size="40" /></td>
+     </tr>
+     <tr>
+      <td class="admintab-l"><label for="db_name"><strong>Database name</strong></label><br /><span class="small">Name of the database</span></td>
+      <td class="admintab-r"><input id="db_name" type="text" name="db_name" value="<?php if (isset($_POST['db_name'])) echo htmlspecialchars(stripslashes($_POST['db_name'])); else echo ''; ?>" size="40" /></td>
+     </tr>
+     <tr>
+      <td class="admintab-l"><label for="db_user"><strong>Database user</strong></label><br /><span class="small">Username to access the database</span></td>
+      <td class="admintab-r"><input id="db_user" type="text" name="db_user" value="<?php if (isset($_POST['db_user'])) echo htmlspecialchars(stripslashes($_POST['db_user'])); else echo ''; ?>" size="40" /></td>
+     </tr>
+     <tr>
+      <td class="admintab-l"><label for="db_password"><strong>Database password</strong></label><br />
+      <span class="small">Password to access the database</span></td>
+      <td class="admintab-r"><input id="db_password" type="password" name="db_password" size="40" /></td>
+     </tr>
+     <tr>
+      <td class="admintab-l"><label for="table_prefix_1"><strong>Database Table prefix</strong></label><br /><span class="small">Table prefix, probably "forum_"</span></td>
+      <td class="admintab-r"><input id="table_prefix_1" type="text" name="table_prefix_1" value="<?php if (isset($_POST['table_prefix_1'])) echo htmlspecialchars(stripslashes($_POST['table_prefix_1'])); else echo 'forum_'; ?>" size="40" /></td>
+     </tr>
+     <tr>
+      <td class="admintab-t" colspan="2">Settings of the new forum (2.1)</td>
+     </tr>
+     <tr>
+      <td class="admintab-l"><label for="table_prefix_2"><strong>Database Table prefix</strong></label><br /><span class="small">Table prefix, probably "mlf2_"</span></td>
+      <td class="admintab-r"><input id="table_prefix_2" type="text" name="table_prefix_2" value="<?php if (isset($_POST['table_prefix_2'])) echo htmlspecialchars(stripslashes($_POST['table_prefix_2'])); else echo 'mlf2_'; ?>" size="40" /></td>
+     </tr>
+     <tr>
+      <td class="admintab-t" colspan="2">Backup file</td>
+     </tr>
+     <tr>
+      <td class="admintab-l"><label for="file"><strong>Filename</strong></label><br /><span class="small">Name of the backup file</span></td>
+      <td class="admintab-r"><input id="file" type="text" name="file" value="<?php if (isset($_POST['file'])) echo stripslashes($_POST['file']); else echo 'mlf_1.7_backup_'.date("YmdHis").'.sql'; ?>" size="40" /></td>
+     </tr>
+     <tr>
+      <td class="admintab-l">&nbsp;</td>
+      <td class="admintab-r"><input type="submit" name="backup_submit" value="OK - Create backup file" /></td>
+     </tr>
+    </table>
+   </form>
 
 <?php endswitch; ?>
 
-</div>
-</body>
+  </div>
+ </body>
 </html>
