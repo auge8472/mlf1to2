@@ -268,7 +268,7 @@ h2                { font-size:16px; margin:0; padding:3px 0 3px 0; }
 p,ul              { font-size:0.82em; line-height:1.45em; max-width:700px; }
 header            { margin:0; padding:0 20px 0 20px; color:#000000; background:#d2ddea; border-bottom: 1px solid #bacbdf; }
 header h1         { font-size:1.75em; line-height:2.2em; margin:0; padding:0; color:#000080; }
-#content          { padding:20px; }
+main              { padding:20px; }
 table.admintab    { border: 1px solid #bacbdf; }
 td.admintab-t     { vertical-align: top; font-family: verdana, arial, sans-serif; background: #d2ddea; font-size:1em; font-weight:bold; }
 td.admintab-l     { width: 50%; vertical-align: top; font-family: verdana, arial, sans-serif; font-size: 13px; background: #e2eaf3; }
@@ -287,7 +287,7 @@ a:active          { color: #ff0000; text-decoration: none; }
    <h1>my little forum 1.7 backup</h1>
   </header>
 
-  <div id="content">
+  <main id="content">
 
 <?php switch($action):
 case 'done': ?>
@@ -365,6 +365,6 @@ if(isset($errors))
 
 <?php endswitch; ?>
 
-  </div>
+  </main>
  </body>
 </html>
