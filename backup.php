@@ -266,8 +266,8 @@ body              { color:#000; background:#fff; margin:0; padding:0; font-famil
 h1                { font-size:1.25em; }
 h2                { font-size:16px; margin:0; padding:3px 0 3px 0; }
 p,ul              { font-size:0.82em; line-height:1.45em; max-width:700px; }
-#top              { margin:0; padding:0 20px 0 20px; color:#000000; background:#d2ddea; border-bottom: 1px solid #bacbdf; }
-#top h1           { font-size:1.75em; line-height:2.2em; margin:0; padding:0; color:#000080; }
+header            { margin:0; padding:0 20px 0 20px; color:#000000; background:#d2ddea; border-bottom: 1px solid #bacbdf; }
+header h1         { font-size:1.75em; line-height:2.2em; margin:0; padding:0; color:#000080; }
 #content          { padding:20px; }
 table.admintab    { border: 1px solid #bacbdf; }
 td.admintab-t     { vertical-align: top; font-family: verdana, arial, sans-serif; background: #d2ddea; font-size:1em; font-weight:bold; }
@@ -283,9 +283,9 @@ a:active          { color: #ff0000; text-decoration: none; }
   </style>
  </head>
  <body>
-  <div id="top">
+  <header id="top">
    <h1>my little forum 1.7 backup</h1>
-  </div>
+  </header>
 
   <div id="content">
 
