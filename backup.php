@@ -296,13 +296,6 @@ case 'done': ?>
 <?php break; ?>
 
 <?php default: ?>
-   <section>
-    <h2>A few notices</h2>
-    <p>By submitting this form the specified backup file will be created in <?php echo dirname($_SERVER['PHP_SELF']); ?> so make sure that this direcory is writable.<br>You can import the backup file into version 2.1 with a tool like phpMyAdmin or the backup function of version 2.1 (therefor copy the file into the directory "backup").</p>
-<?php if (ini_get('safe_mode')): ?>
-    <p><strong>Warning:</strong> As "safe mode" is activated on this server the script running time cannot be extended! This may cause an error and an uncomplete backup file if there's a large amount of entries.</p>
-<?php endif; ?>
-   </section>
 
 <?php if (isset($errors)): ?>
    <section id="caution">
@@ -314,6 +307,13 @@ case 'done': ?>
     </ul>
    </section>
 <?php endif; ?>
+   <section>
+    <h2>A few notices</h2>
+    <p>By submitting this form the specified backup file will be created in <kbd><?php echo dirname($_SERVER['PHP_SELF']); ?></kbd> so make sure that this direcory is writable.<br>You can import the backup file into version 2.1 with a tool like phpMyAdmin or the backup function of version 2.1 (therefor copy the file into the directory "backup").</p>
+<?php if (ini_get('safe_mode')): ?>
+    <p><strong>Warning:</strong> As "safe mode" is activated on this server the script running time cannot be extended! This may cause an error and an uncomplete backup file if there's a large amount of entries.</p>
+<?php endif; ?>
+   </section>
    <section>
     <h2>Preparations for running the script</h2>
     <form action="<?php echo basename($_SERVER['PHP_SELF']); ?>" method="post">
