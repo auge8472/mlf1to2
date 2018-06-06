@@ -356,7 +356,7 @@ case 'done': ?>
        <p><input id="file" type="text" name="file" value="<?php echo (isset($_POST['file'])) ? htmlspecialchars($_POST['file']) : 'mlf_1.7_backup_'.date("YmdHis").'.sql'; ?>" size="40"></p>
       </div>
      </fieldset>
-     <p><input type="submit" name="backup_submit" value="OK - Create backup file"></p>
+     <p><button name="backup_submit">OK - Create backup file</button></p>
     </form>
    </section>
 
