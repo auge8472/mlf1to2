@@ -269,11 +269,13 @@ p,ul              { font-size:0.82em; line-height:1.45em; max-width:700px; }
 header            { margin:0; padding:0 20px 0 20px; color:#000000; background:#d2ddea; border-bottom: 1px solid #bacbdf; }
 header h1         { font-size:1.75em; line-height:2.2em; margin:0; padding:0; color:#000080; }
 main              { padding:20px; }
-.caution          { color: red; font-weight: bold; }
 a:link            { color: #0000cc; text-decoration: none; }
 a:visited         { color: #0000cc; text-decoration: none; }
 a:hover           { color: #0000ff; text-decoration: underline; }
 a:active          { color: #ff0000; text-decoration: none; }
+#caution         { background: #ffc; border: 3px solid #a00; padding: 0.5rem; }
+#caution h2      { color: a00; }
+#caution ul      { padding: 0 0 0 1rem; }
 -->
   </style>
  </head>
@@ -303,7 +305,7 @@ case 'done': ?>
    </section>
 
 <?php if (isset($errors)): ?>
-   <section>
+   <section id="caution">
     <h2>Error!</h2>
     <ul>
 <?php foreach ($errors as $error): ?>
