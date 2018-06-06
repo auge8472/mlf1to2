@@ -317,53 +317,49 @@ case 'done': ?>
     </ul>
    </section>
 <?php endif; ?>
-
-   <form action="<?php echo basename($_SERVER['PHP_SELF']); ?>" method="post">
-    <table class="admintab" border="0" cellpadding="5" cellspacing="1">
-     <tr>
-      <td class="admintab-t" colspan="2">Settings of the old forum (1.7*)</td>
-     </tr>
-     <tr>
-      <td class="admintab-l"><label for="db_host"><strong>Database host</strong></label><br /><span class="small">host name, probably "localhost"</span></td>
-      <td class="admintab-r"><input id="db_host" type="text" name="db_host" value="<?php if (isset($_POST['db_host'])) echo htmlspecialchars(stripslashes($_POST['db_host'])); else echo 'localhost'; ?>" size="40" /></td>
-     </tr>
-     <tr>
-      <td class="admintab-l"><label for="db_name"><strong>Database name</strong></label><br /><span class="small">Name of the database</span></td>
-      <td class="admintab-r"><input id="db_name" type="text" name="db_name" value="<?php if (isset($_POST['db_name'])) echo htmlspecialchars(stripslashes($_POST['db_name'])); else echo ''; ?>" size="40" /></td>
-     </tr>
-     <tr>
-      <td class="admintab-l"><label for="db_user"><strong>Database user</strong></label><br /><span class="small">Username to access the database</span></td>
-      <td class="admintab-r"><input id="db_user" type="text" name="db_user" value="<?php if (isset($_POST['db_user'])) echo htmlspecialchars(stripslashes($_POST['db_user'])); else echo ''; ?>" size="40" /></td>
-     </tr>
-     <tr>
-      <td class="admintab-l"><label for="db_password"><strong>Database password</strong></label><br />
-      <span class="small">Password to access the database</span></td>
-      <td class="admintab-r"><input id="db_password" type="password" name="db_password" size="40" /></td>
-     </tr>
-     <tr>
-      <td class="admintab-l"><label for="table_prefix_1"><strong>Database Table prefix</strong></label><br /><span class="small">Table prefix, probably "forum_"</span></td>
-      <td class="admintab-r"><input id="table_prefix_1" type="text" name="table_prefix_1" value="<?php if (isset($_POST['table_prefix_1'])) echo htmlspecialchars(stripslashes($_POST['table_prefix_1'])); else echo 'forum_'; ?>" size="40" /></td>
-     </tr>
-     <tr>
-      <td class="admintab-t" colspan="2">Settings of the new forum (2.1)</td>
-     </tr>
-     <tr>
-      <td class="admintab-l"><label for="table_prefix_2"><strong>Database Table prefix</strong></label><br /><span class="small">Table prefix, probably "mlf2_"</span></td>
-      <td class="admintab-r"><input id="table_prefix_2" type="text" name="table_prefix_2" value="<?php if (isset($_POST['table_prefix_2'])) echo htmlspecialchars(stripslashes($_POST['table_prefix_2'])); else echo 'mlf2_'; ?>" size="40" /></td>
-     </tr>
-     <tr>
-      <td class="admintab-t" colspan="2">Backup file</td>
-     </tr>
-     <tr>
-      <td class="admintab-l"><label for="file"><strong>Filename</strong></label><br /><span class="small">Name of the backup file</span></td>
-      <td class="admintab-r"><input id="file" type="text" name="file" value="<?php if (isset($_POST['file'])) echo stripslashes($_POST['file']); else echo 'mlf_1.7_backup_'.date("YmdHis").'.sql'; ?>" size="40" /></td>
-     </tr>
-     <tr>
-      <td class="admintab-l">&nbsp;</td>
-      <td class="admintab-r"><input type="submit" name="backup_submit" value="OK - Create backup file" /></td>
-     </tr>
-    </table>
-   </form>
+   <section>
+    <h2>Preparations for running the script</h2>
+    <form action="<?php echo basename($_SERVER['PHP_SELF']); ?>" method="post">
+     <fieldset>
+      <legend>Settings of the old forum (1.7*)</legend>
+      <div>
+       <p><label for="db_host">Database host</label><br><span>host name, probably "localhost"</span></p>
+       <p><input id="db_host" type="text" name="db_host" value="<?php if (isset($_POST['db_host'])) echo htmlspecialchars($_POST['db_host']); ?>" size="40" placeholder="localhost"></p>
+      </div>
+      <div>
+       <p><label for="db_name">Database name</label><br><span>Name of the database</span></p>
+       <p><input id="db_name" type="text" name="db_name" value="<?php if (isset($_POST['db_name'])) echo htmlspecialchars($_POST['db_name']); ?>" size="40"></p>
+      </div>
+      <div>
+       <p><label for="db_user">Database user</label><br><span>Username to access the database</span></p>
+       <p><input id="db_user" type="text" name="db_user" value="<?php if (isset($_POST['db_user'])) echo htmlspecialchars(stripslashes($_POST['db_user'])); ?>" size="40"></p>
+      </div>
+      <div>
+       <p><label for="db_password">Database password</label><br><span>Password to access the database</span></p>
+       <p><input id="db_password" type="password" name="db_password" size="40"></p>
+      </div>
+      <div>
+       <p><label for="table_prefix_1">Database Table prefix</label><br><span>Table prefix, probably "forum_"</span></p>
+       <p><input id="table_prefix_1" type="text" name="table_prefix_1" value="<?php if (isset($_POST['table_prefix_1'])) echo htmlspecialchars($_POST['table_prefix_1']); ?>" size="40" placeholder="forum_"></p>
+      </div>
+     </fieldset>
+     <fieldset>
+      <legend>Settings of the new forum (>= 2.1)</legend>
+      <div>
+       <p><label for="table_prefix_2">Database Table prefix</label><br><span>Table prefix, probably "mlf2_"</span></p>
+       <p><input id="table_prefix_2" type="text" name="table_prefix_2" value="<?php if (isset($_POST['table_prefix_2'])) echo htmlspecialchars($_POST['table_prefix_2']); ?>" size="40" placeholder="mlf2_"></p>
+      </div>
+     </fieldset>
+     <fieldset>
+      <legend>Backup file</legend>
+      <div>
+       <p><label for="file">Filename</label><br><span>Name of the backup file, <em>do not use blanks in file name!</em></span></p>
+       <p><input id="file" type="text" name="file" value="<?php echo (isset($_POST['file'])) ? htmlspecialchars($_POST['file']) : 'mlf_1.7_backup_'.date("YmdHis").'.sql'; ?>" size="40"></p>
+      </div>
+     </fieldset>
+     <p><input type="submit" name="backup_submit" value="OK - Create backup file"></p>
+    </form>
+   </section>
 
 <?php endswitch; ?>
 
