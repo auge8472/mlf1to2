@@ -269,6 +269,7 @@ main section:not(:last-child) { margin: 0 0 1rem 0; }
 main h2          { font-size: 1.25em; margin: 0; padding: 3px 0; }
 p, ul, form      { font-size: 1em; margin: 0.5rem 0 0 0; line-height:1.45em; }
 fieldset:not(:first-child) { margin: 0.5rem 0 0 0; }
+legend           { font-weight: bold; }
 label            { font-weight: bold; cursor: pointer; }
 #caution         { background: #ffc; border: 3px solid #a00; padding: 0.5rem; }
 #caution h2      { color: a00; }
