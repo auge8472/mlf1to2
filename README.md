@@ -2,6 +2,10 @@
 
 With this script you can backup the database content of an installation of My Little Forum 1.7.x. The backup files are ready for a reimport into a installation of My Little Forum, at least version 2.1.
 
+## System requirements
+
+- PHP up to version 5.6 (the script **will** currently **not work under PHP 7.x**!)
+
 ## Usage
 
 1. Install a new My Little Forum of an actual version beside of the old installation of My Little Forum 1.7.x.
