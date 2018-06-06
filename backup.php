@@ -230,9 +230,9 @@ if (isset($_POST['backup_submit'])) {
 		}
 
 		if ($backup->save()) {
-			#echo $backup->time . '<br />' .time();
 			$filesize = number_format(filesize($backup->file)/1048576, 2);
-			$elapse_time = time() - $backup->start_time; 
+			$el_time = time() - $backup->start_time;
+			$el_out = ($el_time < 1) ? 'less than 1 second' : $el_time . ' seconds';
 			$action = 'done';
 		} else {
 			$errors[] = $backup->errors;
@@ -291,9 +291,11 @@ a:active          { color: #ff0000; text-decoration: none; }
 
 <?php switch($action):
 case 'done': ?>
-   <p><strong>Backup file created!</strong></p>
-   <p><a href="<?php echo $backup->file; ?>"><?php echo $backup->file; ?></a> <span class="small">(<?php echo $filesize; ?></a> MB)</span></p>
-   <p class="small">Elapse time: <?php if($elapse_time<1) echo 'less than 1 second'; else echo $elapse_time . ' seconds'; ?></p>
+   <section>
+    <h2>Backup file created!</h2>
+    <p><a href="<?php echo $backup->file; ?>"><?php echo $backup->file; ?></a> <span class="small">(<?php echo $filesize; ?></a> MB)</span></p>
+    <p class="small">Elapse time: <?php echo $el_out; ?></p>
+   </section>
 <?php break; ?>
 
 <?php default: ?>
