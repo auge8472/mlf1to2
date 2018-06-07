@@ -105,7 +105,7 @@ if (isset($_POST['backup_submit'])) {
 		else {
 			$data = mysqli_fetch_assoc($result);
 			$version = $data['value'];
-			if (substr($version, 0, 3) != '1.7') $errors[] = 'The backup can only made from version 1.7.*. Installed version is '. htmlspecialchars(stripslashes($version)) .'.';
+			if (substr($version, 0, 3) != '1.7') $errors[] = 'The backup can only made from version 1.7.*. Installed version is '. htmlspecialchars($version) .'.';
 		}
 		mysqli_free_result($result);
 	}
