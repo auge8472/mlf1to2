@@ -78,11 +78,7 @@ if (isset($_POST['backup_submit'])) {
 	}
 
 	if (empty($errors)) {
-		if (!$connid = @mysql_connect($_POST['db_host'], $_POST['db_user'], $_POST['db_password'])) $errors[] = 'Database error: '. mysql_error();
-	}
-
-	if (empty($errors)) {
-		if (!@mysql_select_db($_POST['db_name'], $connid)) $errors[] = 'Database error: '. mysql_error();
+		if (!$connid = @mysqli_connect($_POST['db_host'], $_POST['db_user'], $_POST['db_password'], $_POST['db_name'])) $errors[] = 'Database error: '. mysqli_connect_error();
 	}
 
 	if (empty($errors)) {
@@ -91,84 +87,84 @@ if (isset($_POST['backup_submit'])) {
 	}
 
 	if (empty($errors)) {
-		$table_prefix = mysql_real_escape_string($_POST['table_prefix_1']);
-		$result = @mysql_query("SHOW TABLES", $connid) or die(mysql_error($connid));
-		while ($data = mysql_fetch_array($result)) {
+		$table_prefix = mysqli_real_escape_string($connid, $_POST['table_prefix_1']);
+		$result = @mysqli_query($connid, "SHOW TABLES") or die(mysqli_error($connid));
+		while ($data = mysqli_fetch_assoc($result)) {
 			$tables[] = $data[0]; 
 		}
 		if (!in_array($table_prefix.'entries',$tables) || !in_array($table_prefix.'userdata',$tables) || !in_array($table_prefix.'categories',$tables) || !in_array($table_prefix.'settings',$tables))  {
 			$errors[] = 'Database tables not found.';
 		}
-		mysql_free_result($result);
+		mysqli_free_result($result);
 	}
 
 	if (empty($errors)) {
 		// check version:
-		$result = @mysql_query("SELECT value FROM ".$table_prefix."settings WHERE name='version' LIMIT 1", $connid) or die(mysql_error($connid));
-		if (mysql_num_rows($result) != 1) $errors[] = 'Version could not be determined.';
+		$result = @mysqli_query($connid, "SELECT value FROM ".$table_prefix."settings WHERE name='version' LIMIT 1") or die(mysqli_error($connid));
+		if (mysqli_num_rows($result) != 1) $errors[] = 'Version could not be determined.';
 		else {
-			$data = mysql_fetch_array($result);
+			$data = mysqli_fetch_assoc($result);
 			$version = $data['value'];
 			if (substr($version, 0, 3) != '1.7') $errors[] = 'The backup can only made from version 1.7.*. Installed version is '. htmlspecialchars(stripslashes($version)) .'.';
 		}
-		mysql_free_result($result); 
+		mysqli_free_result($result);
 	}
 
 	if (empty($errors)) {
 		// get quote symbol:
-		$result = @mysql_query("SELECT value FROM ".$table_prefix."settings WHERE name='quote_symbol' LIMIT 1", $connid) or die(mysql_error($connid));
-		if (mysql_num_rows($result) != 1) $quote_symbol = '»';
+		$result = @mysqli_query($connid, "SELECT value FROM ".$table_prefix."settings WHERE name='quote_symbol' LIMIT 1") or die(mysqli_error($connid));
+		if (mysqli_num_rows($result) != 1) $quote_symbol = '»';
 		else {
-			$data = mysql_fetch_array($result);
+			$data = mysqli_fetch_assoc($result);
 			$quote_symbol = $data['value'];
 		}
-		mysql_free_result($result); 
+		mysqli_free_result($result);
 	}
 
 	if (empty($errors)) {
 		$backup->set_file($_POST['file']);
-		$mlf2_table_prefix = mysql_real_escape_string($_POST['table_prefix_2']);
+		$mlf2_table_prefix = mysqli_real_escape_string($connid, $_POST['table_prefix_2']);
 		$backup->assign("# Database backup of mlf 1.7 for mlf 2.1 created on ".date("F d, Y, H:i:s")."\n");
 		$backup->assign("#\n");
 		$backup->assign("# ".$mlf2_table_prefix."categories\n");
 		$backup->assign("#\n");
 		$backup->assign("TRUNCATE TABLE ".$mlf2_table_prefix."categories;\n");
-		$result = @mysql_query("SELECT id, category_order, replace(category,'\\\\','') AS category, replace(description,'\\\\','') AS description, accession FROM ".$table_prefix."categories", $connid) or die(mysql_error($connid));
-		while($data = mysql_fetch_array($result)) {
-			$data['category'] = mysql_real_escape_string($data['category']);
-			$data['description'] = mysql_real_escape_string($data['description']);
+		$result = @mysqli_query($connid, "SELECT id, category_order, replace(category,'\\\\','') AS category, replace(description,'\\\\','') AS description, accession FROM ".$table_prefix."categories") or die(mysqli_error($connid));
+		while($data = mysqli_fetch_assoc($result)) {
+			$data['category'] = mysqli_real_escape_string($connid, $data['category']);
+			$data['description'] = mysqli_real_escape_string($connid, $data['description']);
 			#$data['description'] = str_replace("\r", "\\r", $data['description']);
 			#$data['description'] = str_replace("\n",  "\\n", $data['description']);
 			$backup->assign("INSERT INTO ".$mlf2_table_prefix."categories VALUES (".$data['id'].", ".$data['category_order'].", '".$data['category']."', '".$data['description']."', ".$data['accession'].");\n");
 		}
-		mysql_free_result($result);
+		mysqli_free_result($result);
 
 		$backup->assign("#\n");
 		$backup->assign("# ".$mlf2_table_prefix."userdata\n");
 		$backup->assign("#\n");
 		$backup->assign("TRUNCATE TABLE ".$mlf2_table_prefix."userdata;\n");
 		$backup->assign("TRUNCATE TABLE ".$mlf2_table_prefix."userdata_cache;\n");     
-		$result = @mysql_query("SELECT user_id, user_type, replace(user_name,'\\\\','') AS user_name, replace(user_real_name,'\\\\','') AS user_real_name, user_pw, user_email, hide_email, user_hp, replace(user_place,'\\\\','') AS user_place, replace(signature,'\\\\','') AS signature, replace(profile,'\\\\','') AS profile, logins, last_login, last_logout, user_ip, registered, new_posting_notify, new_user_notify, user_lock, pwf_code, activate_code FROM ".$table_prefix."userdata ORDER BY user_id ASC", $connid) or die(mysql_error($connid));
-		while($data = mysql_fetch_array($result)) {
+		$result = @mysqli_query($connid, "SELECT user_id, user_type, replace(user_name,'\\\\','') AS user_name, replace(user_real_name,'\\\\','') AS user_real_name, user_pw, user_email, hide_email, user_hp, replace(user_place,'\\\\','') AS user_place, replace(signature,'\\\\','') AS signature, replace(profile,'\\\\','') AS profile, logins, last_login, last_logout, user_ip, registered, new_posting_notify, new_user_notify, user_lock, pwf_code, activate_code FROM ".$table_prefix."userdata ORDER BY user_id ASC") or die(mysqli_error($connid));
+		while($data = mysqli_fetch_assoc($result)) {
 			$user[$data['user_name']] = $data['user_id'];
-			$data['user_name'] = mysql_real_escape_string($data['user_name']);
-			$data['user_type'] = mysql_real_escape_string($data['user_type']);
-			$data['user_real_name'] = mysql_real_escape_string($data['user_real_name']);
-			$data['user_pw'] = mysql_real_escape_string($data['user_pw']);
-			$data['user_email'] = mysql_real_escape_string($data['user_email']);
-			$data['user_hp'] = mysql_real_escape_string($data['user_hp']);
-			$data['user_place'] = mysql_real_escape_string($data['user_place']);
+			$data['user_name'] = mysqli_real_escape_string($connid, $data['user_name']);
+			$data['user_type'] = mysqli_real_escape_string($connid, $data['user_type']);
+			$data['user_real_name'] = mysqli_real_escape_string($connid, $data['user_real_name']);
+			$data['user_pw'] = mysqli_real_escape_string($connid, $data['user_pw']);
+			$data['user_email'] = mysqli_real_escape_string($connid, $data['user_email']);
+			$data['user_hp'] = mysqli_real_escape_string($connid, $data['user_hp']);
+			$data['user_place'] = mysqli_real_escape_string($connid, $data['user_place']);
 			#$data['signature'] = str_replace("\r", "\\r", $data['signature']);
 			#$data['signature'] = str_replace("\n",  "\\n", $data['signature']);
-			$data['signature'] = mysql_real_escape_string($data['signature']);
+			$data['signature'] = mysqli_real_escape_string($connid, $data['signature']);
 			#$data['profile'] = str_replace("\r", "\\r", $data['profile']);
 			#$data['profile'] = str_replace("\n",  "\\n", $data['profile']);
-			$data['profile'] = mysql_real_escape_string($data['profile']);
-			$data['last_login'] = mysql_real_escape_string($data['last_logout']);
-			$data['user_ip'] = mysql_real_escape_string($data['user_ip']);
-			$data['registered'] = mysql_real_escape_string($data['registered']);
-			$data['pwf_code'] = mysql_real_escape_string($data['pwf_code']);
-			$data['activate_code'] = mysql_real_escape_string($data['activate_code']);
+			$data['profile'] = mysqli_real_escape_string($connid, $data['profile']);
+			$data['last_login'] = mysqli_real_escape_string($connid, $data['last_logout']);
+			$data['user_ip'] = mysqli_real_escape_string($connid, $data['user_ip']);
+			$data['registered'] = mysqli_real_escape_string($connid, $data['registered']);
+			$data['pwf_code'] = mysqli_real_escape_string($connid, $data['pwf_code']);
+			$data['activate_code'] = mysqli_real_escape_string($connid, $data['activate_code']);
 
 			switch($data['user_type']) {
 				case 'admin': $data['user_type'] = 2; break;
@@ -183,7 +179,7 @@ if (isset($_POST['backup_submit'])) {
 
 			$backup->assign("INSERT INTO ".$mlf2_table_prefix."userdata VALUES (".$data['user_id'].", ".$data['user_type'].", '".$data['user_name']."', '".$data['user_real_name']."', 0, '0000-00-00', '".$data['user_pw']."', '".$data['user_email']."', ".$data['email_contact'].", '".$data['user_hp']."', '".$data['user_place']."', '".$data['signature']."', '".$data['profile']."', ".$data['logins'].", '".$data['last_login']."', '".$data['last_logout']."', '".$data['user_ip']."', '".$data['registered']."', NULL, 0, 0, 1, 0, 0, ".$data['new_posting_notify'].", ".$data['new_user_notify'].", ".$data['user_lock'].", '', '".$data['pwf_code']."', '".$data['activate_code']."', '', '', 0, '', '');\n");
 		}
-		mysql_free_result($result);
+		mysqli_free_result($result);
 
 		$backup->assign("#\n");
 		$backup->assign("# ".$mlf2_table_prefix."entries\n");
@@ -191,29 +187,29 @@ if (isset($_POST['backup_submit'])) {
 		$backup->assign("TRUNCATE TABLE ".$mlf2_table_prefix."entries;\n");
 		$backup->assign("TRUNCATE TABLE ".$mlf2_table_prefix."entries_cache;\n");
 
-		list($rows) = @mysql_fetch_row(@mysql_query("SELECT COUNT(*) FROM ".$table_prefix."entries", $connid));
+		list($rows) = @mysqli_fetch_row(@mysqli_query($connid, "SELECT COUNT(*) FROM ".$table_prefix."entries"));
 		$cycles = ceil($rows/$settings['max_queries']);
 
 		for ($c = 1; $c <= $cycles; ++$c) {
 			$ul = ($c-1) * $settings['max_queries'];
-			$result = @mysql_query("SELECT id, pid, tid, uniqid, time, last_answer, edited, edited_by, user_id, replace(name,'\\\\','') AS name, replace(subject,'\\\\','') AS subject, category, email, hp, replace(place,'\\\\','') AS place, ip, replace(text,'\\\\','') AS text, show_signature, email_notify, marked, locked, fixed, views FROM ".$table_prefix."entries ORDER BY id ASC LIMIT ".$ul.", ".$settings['max_queries'], $connid) or die(mysql_error($connid));
-			while ($data = mysql_fetch_array($result)) {
-				$data['uniqid'] = mysql_real_escape_string($data['uniqid']);
-				$data['time'] = mysql_real_escape_string($data['time']);
-				$data['last_answer'] = mysql_real_escape_string($data['last_answer']);
-				$data['edited'] = mysql_real_escape_string($data['edited']);
+			$result = @mysqli_query($connid, "SELECT id, pid, tid, uniqid, time, last_answer, edited, edited_by, user_id, replace(name,'\\\\','') AS name, replace(subject,'\\\\','') AS subject, category, email, hp, replace(place,'\\\\','') AS place, ip, replace(text,'\\\\','') AS text, show_signature, email_notify, marked, locked, fixed, views FROM ".$table_prefix."entries ORDER BY id ASC LIMIT ".$ul.", ".$settings['max_queries']) or die(mysqli_error($connid));
+			while ($data = mysqli_fetch_assoc($result)) {
+				$data['uniqid'] = mysqli_real_escape_string($connid, $data['uniqid']);
+				$data['time'] = mysqli_real_escape_string($connid, $data['time']);
+				$data['last_answer'] = mysqli_real_escape_string($connid, $data['last_answer']);
+				$data['edited'] = mysqli_real_escape_string($connid, $data['edited']);
 				#if (is_null($data['edited_by'])) $data['edited_by'] = 'NULL'; else $data['edited_by'] = intval($data['edited_by']);
-				$data['name'] = mysql_real_escape_string($data['name']);
-				$data['subject'] = mysql_real_escape_string($data['subject']);
-				$data['email'] = mysql_real_escape_string($data['email']);
-				$data['place'] = mysql_real_escape_string($data['place']);
-				$data['ip'] = mysql_real_escape_string($data['ip']);
+				$data['name'] = mysqli_real_escape_string($connid, $data['name']);
+				$data['subject'] = mysqli_real_escape_string($connid, $data['subject']);
+				$data['email'] = mysqli_real_escape_string($connid, $data['email']);
+				$data['place'] = mysqli_real_escape_string($connid, $data['place']);
+				$data['ip'] = mysqli_real_escape_string($connid, $data['ip']);
 				$data['text'] = str_replace(utf8_decode($quote_symbol), '>', $data['text']);
 				$data['text'] = str_replace('img/uploaded', 'images/uploaded', $data['text']);
 				$data['text'] = str_replace('forum_entry.php', 'index.php', $data['text']);
 				#$data['text'] = str_replace("\r", "\\r", $data['text']);
 				#$data['text'] = str_replace("\n",  "\\n", $data['text']);
-				$data['text'] = mysql_real_escape_string($data['text']);
+				$data['text'] = mysqli_real_escape_string($connid, $data['text']);
 
 				if (trim($data['edited_by']) != '') {
 					if(isset($user[$data['edited_by']])) {
@@ -226,7 +222,7 @@ if (isset($_POST['backup_submit'])) {
 				if ($data['user_id'] > 0) $data['name'] = '';
 				$backup->assign("INSERT INTO ".$mlf2_table_prefix."entries VALUES (".$data['id'].", ".$data['pid'].", ".$data['tid'].", '".$data['uniqid']."', '".$data['time']."', '".$data['last_answer']."', '".$data['edited']."', ".$data['edited_by_id'].", ".$data['user_id'].", '".$data['name']."', '".$data['subject']."', ".$data['category'].", '".$data['email']."', '".$data['hp']."', '".$data['place']."', '".$data['ip']."', '".$data['text']."', '', ".$data['show_signature'].", ".$data['email_notify'].", ".$data['marked'].", ".$data['locked'].", ".$data['fixed'].", ".$data['views'].", 0, 0, '');\n");
 			}
-			mysql_free_result($result);
+			mysqli_free_result($result);
 		}
 
 		if ($backup->save()) {
