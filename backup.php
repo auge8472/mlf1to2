@@ -141,7 +141,7 @@ if (isset($_POST['backup_submit'])) {
 		$backup->assign("# ".$mlf2_table_prefix."userdata\n");
 		$backup->assign("#\n");
 		$backup->assign("TRUNCATE TABLE ".$mlf2_table_prefix."userdata;\n");
-		$backup->assign("TRUNCATE TABLE ".$mlf2_table_prefix."userdata_cache;\n");     
+		$backup->assign("TRUNCATE TABLE ".$mlf2_table_prefix."userdata_cache;\n");
 		$result = @mysqli_query($connid, "SELECT user_id, user_type, replace(user_name,'\\\\','') AS user_name, replace(user_real_name,'\\\\','') AS user_real_name, user_pw, user_email, hide_email, user_hp, replace(user_place,'\\\\','') AS user_place, replace(signature,'\\\\','') AS signature, replace(profile,'\\\\','') AS profile, logins, last_login, last_logout, user_ip, registered, new_posting_notify, new_user_notify, user_lock, pwf_code, activate_code FROM ".$table_prefix."userdata ORDER BY user_id ASC") or die(mysqli_error($connid));
 		while ($data = mysqli_fetch_assoc($result)) {
 			$user[$data['user_name']] = $data['user_id'];
