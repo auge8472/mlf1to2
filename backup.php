@@ -186,7 +186,7 @@ if (isset($_POST['backup_submit'])) {
 
 		for ($c = 1; $c <= $cycles; ++$c) {
 			$ul = ($c-1) * $settings['max_queries'];
-			$result = @mysqli_query($connid, "SELECT id, pid, tid, uniqid, time, last_answer, edited, edited_by, user_id, replace(name,'\\\\','') AS name, replace(subject,'\\\\','') AS subject, category, email, hp, replace(place,'\\\\','') AS place, ip, replace(text,'\\\\','') AS text, show_signature, email_notify, marked, locked, fixed, views FROM ".$table_prefix."entries ORDER BY id ASC LIMIT ".$ul.", ".$settings['max_queries']) or die(mysqli_error($connid));
+			$result = @mysqli_query($connid, "SELECT id, pid, tid, uniqid, time, last_answer, edited, (SELECT user_id FROM ".$table_prefix."userdata WHERE ".$table_prefix."userdata.user_id = edited_by) AS edited_by, user_id, replace(name,'\\\\','') AS name, replace(subject,'\\\\','') AS subject, category, email, hp, replace(place,'\\\\','') AS place, ip, replace(text,'\\\\','') AS text, show_signature, email_notify, marked, locked, fixed, views FROM ".$table_prefix."entries ORDER BY id ASC LIMIT ".$ul.", ".$settings['max_queries']) or die(mysqli_error($connid));
 			while ($data = mysqli_fetch_assoc($result)) {
 				$data['uniqid'] = mysqli_real_escape_string($connid, $data['uniqid']);
 				$data['time'] = mysqli_real_escape_string($connid, $data['time']);
