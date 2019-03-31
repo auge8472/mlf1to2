@@ -192,7 +192,7 @@ if (isset($_POST['backup_submit'])) {
 				$data['time'] = mysqli_real_escape_string($connid, $data['time']);
 				$data['last_answer'] = mysqli_real_escape_string($connid, $data['last_answer']);
 				$data['edited'] = mysqli_real_escape_string($connid, $data['edited']);
-				#if (is_null($data['edited_by'])) $data['edited_by'] = 'NULL'; else $data['edited_by'] = intval($data['edited_by']);
+				$data['edited_by'] = (is_null($data['edited_by'])) ? 'NULL' : intval($data['edited_by']);
 				$data['name'] = mysqli_real_escape_string($connid, $data['name']);
 				$data['subject'] = mysqli_real_escape_string($connid, $data['subject']);
 				$data['email'] = mysqli_real_escape_string($connid, $data['email']);
