@@ -130,7 +130,7 @@ if (isset($_POST['backup_submit'])) {
 		$backup->assign("#\n");
 		$backup->assign("TRUNCATE TABLE ".$mlf2_table_prefix."categories;\n");
 		$result = @mysqli_query($connid, "SELECT id, category_order, replace(category,'\\\\','') AS category, replace(description,'\\\\','') AS description, accession FROM ".$table_prefix."categories") or die(mysqli_error($connid));
-		while($data = mysqli_fetch_assoc($result)) {
+		while ($data = mysqli_fetch_assoc($result)) {
 			$data['category'] = mysqli_real_escape_string($connid, $data['category']);
 			$data['description'] = mysqli_real_escape_string($connid, $data['description']);
 			#$data['description'] = str_replace("\r", "\\r", $data['description']);
@@ -145,7 +145,7 @@ if (isset($_POST['backup_submit'])) {
 		$backup->assign("TRUNCATE TABLE ".$mlf2_table_prefix."userdata;\n");
 		$backup->assign("TRUNCATE TABLE ".$mlf2_table_prefix."userdata_cache;\n");     
 		$result = @mysqli_query($connid, "SELECT user_id, user_type, replace(user_name,'\\\\','') AS user_name, replace(user_real_name,'\\\\','') AS user_real_name, user_pw, user_email, hide_email, user_hp, replace(user_place,'\\\\','') AS user_place, replace(signature,'\\\\','') AS signature, replace(profile,'\\\\','') AS profile, logins, last_login, last_logout, user_ip, registered, new_posting_notify, new_user_notify, user_lock, pwf_code, activate_code FROM ".$table_prefix."userdata ORDER BY user_id ASC") or die(mysqli_error($connid));
-		while($data = mysqli_fetch_assoc($result)) {
+		while ($data = mysqli_fetch_assoc($result)) {
 			$user[$data['user_name']] = $data['user_id'];
 			$data['user_name'] = mysqli_real_escape_string($connid, $data['user_name']);
 			$data['user_type'] = mysqli_real_escape_string($connid, $data['user_type']);
@@ -166,7 +166,7 @@ if (isset($_POST['backup_submit'])) {
 			$data['pwf_code'] = mysqli_real_escape_string($connid, $data['pwf_code']);
 			$data['activate_code'] = mysqli_real_escape_string($connid, $data['activate_code']);
 
-			switch($data['user_type']) {
+			switch ($data['user_type']) {
 				case 'admin': $data['user_type'] = 2; break;
 				case 'mod': $data['user_type'] = 1; break;
 				default: $data['user_type'] = 0;
@@ -212,7 +212,7 @@ if (isset($_POST['backup_submit'])) {
 				$data['text'] = mysqli_real_escape_string($connid, $data['text']);
 
 				if (trim($data['edited_by']) != '') {
-					if(isset($user[$data['edited_by']])) {
+					if (isset($user[$data['edited_by']])) {
 						$data['edited_by_id'] = $user[$data['edited_by']];
 					}
 					else $data['edited_by_id'] = 'NULL';
@@ -247,7 +247,7 @@ if (isset($_POST['backup_submit'])) {
 	}
 }
 
-if(empty($action)) $action = 'main';
+if (empty($action)) $action = 'main';
 
 header('Content-Type: text/html; charset=utf-8');
 
