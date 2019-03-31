@@ -133,8 +133,6 @@ if (isset($_POST['backup_submit'])) {
 		while ($data = mysqli_fetch_assoc($result)) {
 			$data['category'] = mysqli_real_escape_string($connid, $data['category']);
 			$data['description'] = mysqli_real_escape_string($connid, $data['description']);
-			#$data['description'] = str_replace("\r", "\\r", $data['description']);
-			#$data['description'] = str_replace("\n",  "\\n", $data['description']);
 			$backup->assign("INSERT INTO ".$mlf2_table_prefix."categories VALUES (".$data['id'].", ".$data['category_order'].", '".$data['category']."', '".$data['description']."', ".$data['accession'].");\n");
 		}
 		mysqli_free_result($result);
@@ -154,11 +152,7 @@ if (isset($_POST['backup_submit'])) {
 			$data['user_email'] = mysqli_real_escape_string($connid, $data['user_email']);
 			$data['user_hp'] = mysqli_real_escape_string($connid, $data['user_hp']);
 			$data['user_place'] = mysqli_real_escape_string($connid, $data['user_place']);
-			#$data['signature'] = str_replace("\r", "\\r", $data['signature']);
-			#$data['signature'] = str_replace("\n",  "\\n", $data['signature']);
 			$data['signature'] = mysqli_real_escape_string($connid, $data['signature']);
-			#$data['profile'] = str_replace("\r", "\\r", $data['profile']);
-			#$data['profile'] = str_replace("\n",  "\\n", $data['profile']);
 			$data['profile'] = mysqli_real_escape_string($connid, $data['profile']);
 			$data['last_login'] = mysqli_real_escape_string($connid, $data['last_logout']);
 			$data['user_ip'] = mysqli_real_escape_string($connid, $data['user_ip']);
@@ -207,8 +201,6 @@ if (isset($_POST['backup_submit'])) {
 				$data['text'] = str_replace(utf8_decode($quote_symbol), '>', $data['text']);
 				$data['text'] = str_replace('img/uploaded', 'images/uploaded', $data['text']);
 				$data['text'] = str_replace('forum_entry.php', 'index.php', $data['text']);
-				#$data['text'] = str_replace("\r", "\\r", $data['text']);
-				#$data['text'] = str_replace("\n",  "\\n", $data['text']);
 				$data['text'] = mysqli_real_escape_string($connid, $data['text']);
 
 				if (trim($data['edited_by']) != '') {
@@ -233,17 +225,6 @@ if (isset($_POST['backup_submit'])) {
 		} else {
 			$errors[] = $backup->errors;
 		}
-
-		/*
-		$len = strlen($dump);
-		$filename = 'mlf_1.7_backup_'.date("YmdHis").'.sql';
-		header("Content-Type: text/plain; charset=utf-8");
-		header("Content-Disposition: attachment; filename=\"".$filename);
-		header("Accept-Ranges: bytes");
-		header("Content-Length: ".$len);
-		echo $dump;
-		exit;
-		*/
 	}
 }
 
